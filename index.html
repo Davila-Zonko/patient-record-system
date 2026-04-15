@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediCore | Patient Record System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-bg">
+    <div class="login-orb orb1"></div>
+    <div class="login-orb orb2"></div>
+    <div class="login-orb orb3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="login-container">
+    <div class="login-brand">
+      <div class="brand-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="12" fill="url(#brandGrad)"/>
+          <path d="M20 8v24M8 20h24" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="6" fill="white" fill-opacity="0.2"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40">
+              <stop offset="0%" stop-color="#0EA5E9"/>
+              <stop offset="100%" stop-color="#6366F1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-name">MediCore</h1>
+        <p class="brand-tag">Patient Record System</p>
+      </div>
+    </div>
+    <div class="login-card">
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to access patient records</p>
+      </div>
+      <div class="login-form">
+        <div class="form-group">
+          <label>Username</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <input type="text" id="loginUser" placeholder="Enter your username" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="loginPass" placeholder="Enter your password" />
+            <button class="toggle-pass" onclick="togglePassword()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="loginError" class="login-error hidden"></div>
+        <button class="btn-login" onclick="doLogin()">
+          <span>Sign In</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="login-hint">
+          <p>Demo credentials: <code>admin</code> / <code>password</code></p>
+        </div>
+      </div>
+    </div>
+    <div class="login-stats">
+      <div class="login-stat"><span class="stat-num">15+</span><span>Patients</span></div>
+      <div class="login-stat"><span class="stat-num">8+</span><span>Records</span></div>
+      <div class="login-stat"><span class="stat-num">HIPAA</span><span>Compliant</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp" class="app hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon sm">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="10" fill="url(#sideGrad)"/>
+          <path d="M20 8v24M8 20h24" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <defs><linearGradient id="sideGrad" x1="0" y1="0" x2="40" y2="40"><stop offset="0%" stop-color="#0EA5E9"/><stop offset="100%" stop-color="#6366F1"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="brand-text">MediCore</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" onclick="showPage('records-list')" data-page="records-list">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+        <span>Patient Records</span>
+      </a>
+      <a class="nav-item" onclick="showPage('add-record')" data-page="add-record">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>Add Patient</span>
+      </a>
+
+      <div class="nav-section-label">Analytics</div>
+      <a class="nav-item" onclick="showPage('reports')" data-page="reports">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        <span>Reports</span>
+      </a>
+      <a class="nav-item" onclick="showPage('history')" data-page="history">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" onclick="showPage('profile')" data-page="profile">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Profile</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">AD</div>
+        <div class="user-info">
+          <span class="user-name" id="sidebarName">Loading...</span>
+          <span class="user-role" id="sidebarRole">—</span>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-right">
+        <div class="topbar-time" id="topbarTime"></div>
+        <div class="notif-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="page-container">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Good <span id="greeting-time">morning</span>, <span id="greeting-name">Doctor</span> 👋</h2>
+            <p class="page-sub">Here's what's happening at your facility today</p>
+          </div>
+          <button class="btn-primary" onclick="showPage('add-record')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            New Patient
+          </button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card loading">
+            <div class="stat-icon" style="--c:#0EA5E9;--cb:#0EA5E920">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 9h6M9 13h6"/></svg>
+            </div>
+            <div class="stat-info"><span class="stat-value" id="s-total">—</span><span class="stat-label">Total Patients</span></div>
+            <div class="stat-trend up">+<span id="s-month">0</span> this month</div>
+          </div>
+          <div class="stat-card loading">
+            <div class="stat-icon" style="--c:#10B981;--cb:#10B98120">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="stat-info"><span class="stat-value" id="s-active">—</span><span class="stat-label">Active Patients</span></div>
+            <div class="stat-trend up">Currently in care</div>
+          </div>
+          <div class="stat-card loading">
+            <div class="stat-icon" style="--c:#F59E0B;--cb:#F59E0B20">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            </div>
+            <div class="stat-info"><span class="stat-value" id="s-records">—</span><span class="stat-label">Medical Records</span></div>
+            <div class="stat-trend up">Documented visits</div>
+          </div>
+          <div class="stat-card loading">
+            <div class="stat-icon" style="--c:#EF4444;--cb:#EF444420">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="stat-info"><span class="stat-value" id="s-critical">—</span><span class="stat-label">Critical Cases</span></div>
+            <div class="stat-trend down">Needs attention</div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="card-header">
+              <h3>Recent Patients</h3>
+              <button class="link-btn" onclick="showPage('records-list')">View all →</button>
+            </div>
+            <div id="recentPatients" class="patient-mini-list"></div>
+          </div>
+          <div class="dash-card">
+            <div class="card-header"><h3>Patient Status Overview</h3></div>
+            <div id="statusChart" class="status-chart-wrap"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECORDS LIST PAGE -->
+      <div class="page" id="page-records-list">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Patient Records</h2>
+            <p class="page-sub" id="recordsCount">Loading records...</p>
+          </div>
+          <button class="btn-primary" onclick="showPage('add-record')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Add Patient
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search patients by name, ID, email…" oninput="filterPatients()" />
+          </div>
+          <div class="filter-chips">
+            <button class="chip active" onclick="filterByStatus('', this)">All</button>
+            <button class="chip" onclick="filterByStatus('Active', this)">Active</button>
+            <button class="chip" onclick="filterByStatus('Critical', this)">Critical</button>
+            <button class="chip" onclick="filterByStatus('Stable', this)">Stable</button>
+            <button class="chip" onclick="filterByStatus('Discharged', this)">Discharged</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table" id="patientsTable">
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Name</th>
+                <th>Age / Gender</th>
+                <th>Blood Type</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientsBody"></tbody>
+          </table>
+          <div id="tableLoader" class="table-loader">
+            <div class="spinner"></div>
+            <span>Loading patients...</span>
+          </div>
+          <div id="tableEmpty" class="table-empty hidden">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+            <p>No patients found</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD PATIENT PAGE -->
+      <div class="page" id="page-add-record">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title" id="addFormTitle">Register New Patient</h2>
+            <p class="page-sub">Fill in all required information carefully</p>
+          </div>
+        </div>
+
+        <form class="add-form" id="patientForm" onsubmit="submitPatient(event)">
+          <input type="hidden" id="editPatientId" />
+
+          <div class="form-section">
+            <div class="form-section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Personal Information
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" id="f-firstName" required placeholder="e.g. Amara" />
+              </div>
+              <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" id="f-lastName" required placeholder="e.g. Okonkwo" />
+              </div>
+              <div class="form-group">
+                <label>Date of Birth *</label>
+                <input type="date" id="f-dob" required />
+              </div>
+              <div class="form-group">
+                <label>Gender *</label>
+                <select id="f-gender" required>
+                  <option value="">Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Blood Type</label>
+                <select id="f-blood">
+                  <option value="">Unknown</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>AB+</option><option>AB-</option>
+                  <option>O+</option><option>O-</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="f-status">
+                  <option>Active</option>
+                  <option>Stable</option>
+                  <option>Critical</option>
+                  <option>Under Observation</option>
+                  <option>Discharged</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Contact Details
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="f-phone" placeholder="+237 6XX XXX XXX" />
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="f-email" placeholder="patient@email.com" />
+              </div>
+              <div class="form-group full">
+                <label>Home Address</label>
+                <input type="text" id="f-address" placeholder="Street, City, Region" />
+              </div>
+              <div class="form-group">
+                <label>Emergency Contact Name</label>
+                <input type="text" id="f-emergencyContact" placeholder="Full name" />
+              </div>
+              <div class="form-group">
+                <label>Emergency Contact Phone</label>
+                <input type="tel" id="f-emergencyPhone" placeholder="+237 6XX XXX XXX" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Medical & Insurance
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Insurance Number</label>
+                <input type="text" id="f-insurance" placeholder="INS-XXXX-XXXXX" />
+              </div>
+              <div class="form-group">
+                <label>Known Allergies</label>
+                <input type="text" id="f-allergies" placeholder="e.g. Penicillin, Latex" />
+              </div>
+              <div class="form-group full">
+                <label>Chronic Conditions</label>
+                <input type="text" id="f-conditions" placeholder="e.g. Hypertension, Diabetes" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="resetPatientForm()">Reset Form</button>
+            <button type="submit" class="btn-primary" id="submitPatientBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Register Patient
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- REPORTS PAGE -->
+      <div class="page" id="page-reports">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Reports & Analytics</h2>
+            <p class="page-sub">Facility insights and patient statistics</p>
+          </div>
+          <button class="btn-secondary" onclick="loadStats()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+            Refresh
+          </button>
+        </div>
+
+        <div class="reports-grid">
+          <div class="report-card">
+            <div class="card-header"><h3>Blood Type Distribution</h3></div>
+            <div id="bloodTypeChart" class="bar-chart-wrap"></div>
+          </div>
+          <div class="report-card">
+            <div class="card-header"><h3>Gender Distribution</h3></div>
+            <div id="genderChart" class="donut-wrap"></div>
+          </div>
+          <div class="report-card wide">
+            <div class="card-header"><h3>Top Departments by Visits</h3></div>
+            <div id="deptChart" class="bar-chart-wrap"></div>
+          </div>
+          <div class="report-card wide">
+            <div class="card-header"><h3>All Medical Records</h3></div>
+            <div id="allRecordsTable" class="records-mini"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY PAGE -->
+      <div class="page" id="page-history">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Activity History</h2>
+            <p class="page-sub">Full audit trail of system actions</p>
+          </div>
+        </div>
+        <div class="table-card">
+          <div id="historyList" class="history-list"></div>
+          <div id="historyLoader" class="table-loader">
+            <div class="spinner"></div><span>Loading history...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE PAGE -->
+      <div class="page" id="page-profile">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">My Profile</h2>
+            <p class="page-sub">System access & requirements information</p>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" id="profileAvatar">AD</div>
+              <div class="avatar-glow"></div>
+            </div>
+            <h3 id="profileName">—</h3>
+            <p id="profileRole" class="profile-role-badge">—</p>
+            <div class="profile-meta">
+              <div class="meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Logged in: <strong id="profileLoginTime">—</strong></span>
+              </div>
+              <div class="meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Access: <strong id="profileAccess">—</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="requirements-card">
+            <div class="card-header"><h3>System Requirements</h3></div>
+            <div class="req-list">
+              <div class="req-item done">
+                <div class="req-num">01</div>
+                <div class="req-content">
+                  <strong>Login Screen</strong>
+                  <p>Secure authentication with session management</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+              <div class="req-item done">
+                <div class="req-num">02</div>
+                <div class="req-content">
+                  <strong>Records List</strong>
+                  <p>Searchable, filterable patient registry with full CRUD</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+              <div class="req-item done">
+                <div class="req-num">03</div>
+                <div class="req-content">
+                  <strong>Add Record</strong>
+                  <p>Multi-section form for comprehensive patient data entry</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+              <div class="req-item done">
+                <div class="req-num">04</div>
+                <div class="req-content">
+                  <strong>Reports</strong>
+                  <p>Visual analytics: blood types, gender, departments, records</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+              <div class="req-item done">
+                <div class="req-num">05</div>
+                <div class="req-content">
+                  <strong>History</strong>
+                  <p>Full audit log of all system activity</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+              <div class="req-item done">
+                <div class="req-num">06</div>
+                <div class="req-content">
+                  <strong>Profile | Requirements</strong>
+                  <p>User profile and this requirements checklist</p>
+                </div>
+                <div class="req-status">✓ Complete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-container -->
+  </main>
+</div>
+
+<!-- PATIENT DETAIL MODAL -->
+<div class="modal-overlay hidden" id="patientModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="modalPatientName">Patient Details</h3>
+        <p id="modalPatientId" class="modal-pid">—</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-icon edit" id="modalEditBtn" onclick="editFromModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+        <button class="btn-icon danger" id="modalDeleteBtn" onclick="deleteFromModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+          Delete
+        </button>
+        <button class="btn-icon close" onclick="closeModal('patientModal')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <div class="card-header" style="margin-bottom:1rem"><h4>Medical Records</h4>
+        <button class="link-btn" onclick="showAddMedRecord()">+ Add Record</button>
+      </div>
+      <div id="modalRecords" class="modal-records-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MEDICAL RECORD MODAL -->
+<div class="modal-overlay hidden" id="medRecordModal">
+  <div class="modal sm">
+    <div class="modal-header">
+      <h3>New Medical Record</h3>
+      <button class="btn-icon close" onclick="closeModal('medRecordModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="medRecordForm" onsubmit="submitMedRecord(event)">
+        <input type="hidden" id="mr-patientId" />
+        <div class="form-grid compact">
+          <div class="form-group"><label>Visit Date *</label><input type="date" id="mr-date" required /></div>
+          <div class="form-group"><label>Doctor Name</label><input type="text" id="mr-doctor" placeholder="Dr. Name" /></div>
+          <div class="form-group"><label>Department</label><input type="text" id="mr-dept" placeholder="e.g. Cardiology" /></div>
+          <div class="form-group"><label>Follow-up Date</label><input type="date" id="mr-followup" /></div>
+          <div class="form-group full"><label>Diagnosis</label><textarea id="mr-diagnosis" rows="2" placeholder="Primary diagnosis..."></textarea></div>
+          <div class="form-group full"><label>Symptoms</label><textarea id="mr-symptoms" rows="2" placeholder="Patient-reported symptoms..."></textarea></div>
+          <div class="form-group full"><label>Treatment</label><textarea id="mr-treatment" rows="2" placeholder="Treatment given..."></textarea></div>
+          <div class="form-group full"><label>Medications</label><textarea id="mr-meds" rows="2" placeholder="Prescribed medications..."></textarea></div>
+          <div class="form-group full"><label>Notes</label><textarea id="mr-notes" rows="2" placeholder="Additional notes..."></textarea></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal('medRecordModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Save Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
