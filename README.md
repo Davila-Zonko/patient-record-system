@@ -1,15 +1,9 @@
 # MediCore — Patient Record System
-### Assignment #9 | BEDIBOUNE ALIMOKA DEBORAH | AICS
-
----
-
 ## 📋 Project Overview
 A complete, full-stack Patient Record System built with HTML/CSS/JavaScript (frontend) and PHP/MySQL (backend).
 
----
-
 ## 🗂 Project Structure
-```
+
 patient-record-system/
 ├── index.html              ← Main frontend (all 6 screens)
 ├── css/
@@ -20,17 +14,14 @@ patient-record-system/
 │   ├── config.php          ← DB connection + helpers
 │   └── api.php             ← REST API (all endpoints)
 └── database.sql            ← Full DB schema + seed data
-```
-
----
 
 ## ⚙️ Setup Instructions (Laragon)
 
 ### Step 1 — Copy files
 Place the entire `patient-record-system/` folder in:
-```
+
 C:\laragon\www\patient-record-system\
-```
+
 
 ### Step 2 — Create the Database
 1. Open your browser and go to: `http://localhost/phpmyadmin`
@@ -50,7 +41,6 @@ define('DB_NAME', 'patient_record_db');
 ### Step 4 — Run the app
 Go to: `http://localhost/patient-record-system/`
 
----
 
 ## 🔐 Login Credentials
 | Username | Password | Role |
@@ -61,7 +51,7 @@ Go to: `http://localhost/patient-record-system/`
 
 > ⚠️ The seed password hash in the SQL matches the string `password` using PHP's `password_hash()`.
 
----
+
 
 ## ✅ Implemented Screens
 
@@ -74,7 +64,6 @@ Go to: `http://localhost/patient-record-system/`
 | 5 | History (full audit log) | ✅ Complete |
 | 6 | Profile + Requirements Checklist | ✅ Complete |
 
----
 
 ## 🌟 Features
 - 🔒 Session-based authentication
@@ -85,7 +74,6 @@ Go to: `http://localhost/patient-record-system/`
 - 📱 Fully responsive (mobile-friendly)
 - ✨ Smooth animations & modern dark UI
 
----
 
 ## 🛠 Tech Stack
 | Layer | Technology |
